@@ -21,22 +21,22 @@ dag = DAG('xkcd', default_args=args, description='xkcd practical exam',
 
 create_local_import_dir = CreateDirectoryOperator(
     task_id='create_import_dir',
-    path='/home/airflow',
+    path='/home/xkcd',
     directory='imdb',
     dag=dag,
 )
 
 clear_local_import_dir = ClearDirectoryOperator(
     task_id='clear_import_dir',
-    directory='/home/airflow/imdb',
+    directory='/home/airflow/xkcd',
     pattern='*',
     dag=dag,
 )
 
-download_title_ratings = HttpDownloadOperator(
-    task_id='download_title_ratings',
-    download_uri='https://datasets.imdbws.com/title.ratings.tsv.gz',
-    save_to='/home/airflow/imdb/title.ratings_{{ ds }}.tsv.gz',
+download_xkcd_latest = HttpDownloadOperator(
+    task_id='download_xkcd_latest',
+    download_uri='https://xkcd.com//info.0.json',
+    save_to='/home/airflow/xkcd/latest_xkcd.json',
     dag=dag,
 )
 
