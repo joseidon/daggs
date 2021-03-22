@@ -21,8 +21,8 @@ dag = DAG('xkcd', default_args=args, description='xkcd practical exam',
 
 create_local_import_dir = CreateDirectoryOperator(
     task_id='create_import_dir',
-    path='/home/airflow/xkcd',
-    directory='imdb',
+    path='/home/airflow',
+    directory='xkcd',
     dag=dag,
 )
 
