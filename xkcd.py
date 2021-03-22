@@ -40,4 +40,4 @@ download_xkcd_latest = HttpDownloadOperator(
     dag=dag,
 )
 
-create_local_import_dir >> clear_local_import_dir >> download_title_ratings
+create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest
