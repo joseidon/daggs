@@ -9,6 +9,7 @@ from airflow.operators.filesystem_operations import CreateDirectoryOperator
 from airflow.operators.filesystem_operations import ClearDirectoryOperator
 from airflow.operators.hive_operator import HiveOperator
 from airflow.models import Variable
+from airflow.operators.python_operator import PythonOperator
 
 
 args = {
