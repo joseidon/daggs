@@ -44,15 +44,16 @@ download_xkcd_latest = HttpDownloadOperator(
 
 last_comic = PythonOperator(
     task_id='last_comic',
-    python_callable=getNumber,
+    python_callable=get_number,
     dag=dag)
 
 
-def getNumber():
+def get_number():
     number_of_comics = 0
     with open('/home/airflow/xkcd/latest_xkcd.json') as json_file:
         data = json.load(json_file)
         number_of_comics = data['num']
+    print(number_of_comics)
     return number_of_comics
 
 create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest >> last_comic
