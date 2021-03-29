@@ -8,6 +8,7 @@ from airflow.operators.hdfs_operations import HdfsPutFileOperator, HdfsGetFileOp
 from airflow.operators.filesystem_operations import CreateDirectoryOperator
 from airflow.operators.filesystem_operations import ClearDirectoryOperator
 from airflow.operators.hive_operator import HiveOperator
+from airflow.models import Variable
 
 
 args = {
@@ -40,4 +41,17 @@ download_xkcd_latest = HttpDownloadOperator(
     dag=dag,
 )
 
-create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest
+last_comic = PythonOperator(
+    task_id='last_comic',
+    python_callable=getNumber,
+    dag=dag)
+
+
+def getNumber():
+    number_of_comics = 0
+    with open('/home/airflow/xkcd/latest_xkcd.json') as json_file:
+        data = json.load(json_file)
+        number_of_comics = data['num']
+    return number_of_comics
+
+create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest >> last_comic
