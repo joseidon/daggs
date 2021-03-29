@@ -103,7 +103,7 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
         save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
         dag=dag,
     )
-    general_xkcd_download.setUpstream(last_download_comic)
+    general_xkcd_download.set_upstream(last_download_comic)
 
 
 
