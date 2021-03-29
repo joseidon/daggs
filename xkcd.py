@@ -32,8 +32,8 @@ def get_number():
     return number_of_comics
 
 def get_download_number():
-    maxVal = Variable.get("number_of_comics")
-    mypath = int('/home/airflow/xkcd/')
+    maxVal = int(Variable.get("number_of_comics"))
+    mypath = '/home/airflow/xkcd/'
     latest_download = 1
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     for f in onlyfiles:
