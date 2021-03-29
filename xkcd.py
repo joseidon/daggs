@@ -26,6 +26,7 @@ def get_number():
         data = json.load(json_file)
         number_of_comics = data['num']
     print(number_of_comics)
+    Variable.set("number_of_Comics", number_of_comics)
     return number_of_comics
 
 create_local_import_dir = CreateDirectoryOperator(
@@ -48,6 +49,12 @@ download_xkcd_latest = HttpDownloadOperator(
     save_to='/home/airflow/xkcd/latest_xkcd.json',
     dag=dag,
 )
+download_xkcd_oldest= HttpDownloadOperator(
+    task_id='download_xkcd_latest',
+    download_uri='https://xkcd.com/1/info.0.json',
+    save_to='/home/airflow/xkcd/1.json',
+    dag=dag,
+)
 
 last_comic = PythonOperator(
     task_id='last_comic',
@@ -57,4 +64,12 @@ last_comic = PythonOperator(
 
 
 
-create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest >> last_comic
+
+for i in range Variable.get("number_of_comics"):
+
+
+
+
+
+create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest >> last_comic >> download_xkcd_oldest
+#last_comic >> tasks
