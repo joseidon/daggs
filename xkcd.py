@@ -39,7 +39,7 @@ def get_download_number():
     for f in onlyfiles:
         with open('{}{}'.format(mypath,f)) as json_file:
             data = json.load(json_file)
-            if data['num']>latest_download & data['num']<maxVal:
+            if data['num']>latest_download & data['num']!=maxVal:
                 latest_download = data['num']
     Variable.set("number_of_latest_download", latest_download)
     return latest_download
