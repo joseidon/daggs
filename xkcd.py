@@ -40,7 +40,7 @@ def get_download_number():
         with open(f) as json_file:
             data = json.load(json_file)
             if data['num']>latest_download & data['num']<maxVal:
-            latest_download = data['num']
+                latest_download = data['num']
     Variable.set("number_of_latest_download", latest_download)
     return latest_download
 
