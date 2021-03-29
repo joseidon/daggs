@@ -11,6 +11,8 @@ from airflow.operators.hive_operator import HiveOperator
 from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
 import json
+from os import listdir
+from os.path import isfile, join
 
 args = {
     'owner': 'airflow'
@@ -28,6 +30,20 @@ def get_number():
     print(number_of_comics)
     Variable.set("number_of_Comics", number_of_comics)
     return number_of_comics
+
+def get_download_number():
+    maxVal = Variable.get("number_of_comics")
+    mypath = '/home/airflow/xkcd/'
+    latest_download = 1
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    for f in onlyfiles:
+        data = json.load(f)
+        if data['num']>latest_download & data['num']<maxVal:
+            latest_download = data['num']
+    Variable.set("number_of_latest_download", latest_download)
+    return latest_download
+
+
 
 create_local_import_dir = CreateDirectoryOperator(
     task_id='create_import_dir',
@@ -49,18 +65,17 @@ download_xkcd_latest = HttpDownloadOperator(
     save_to='/home/airflow/xkcd/latest_xkcd.json',
     dag=dag,
 )
-download_xkcd_oldest= HttpDownloadOperator(
-    task_id='download_xkcd_oldest',
-    download_uri='https://xkcd.com/1/info.0.json',
-    save_to='/home/airflow/xkcd/1.json',
-    dag=dag,
-)
+
 
 last_comic = PythonOperator(
     task_id='last_comic',
     python_callable=get_number,
     dag=dag)
 
+last_download_comic = PythonOperator(
+    task_id='last_download_comic',
+    python_callable=get_download_number,
+    dag=dag)
 
 
 
@@ -71,5 +86,5 @@ last_comic = PythonOperator(
 
 
 
-create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest >> last_comic >> download_xkcd_oldest
+create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
