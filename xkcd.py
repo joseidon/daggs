@@ -103,6 +103,7 @@ for i in range(Variable.get("number_of down"),Variable.get("number_of_comics")):
         save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
         dag=dag,
     )
+    general_xkcd_download.setUpstream(last_download_comic)
 
 
 
