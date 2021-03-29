@@ -24,7 +24,7 @@ dag = DAG('xkcd', default_args=args, description='xkcd practical exam',
 
 def get_number():
     number_of_comics = 0
-    with open('/home/airflow/xkcd/latest_xkcd.json') as json_file:
+    with open('/home/airflow/xkcd2/latest_xkcd.json') as json_file:
         data = json.load(json_file)
         number_of_comics = data['num']
     print(number_of_comics)
@@ -61,10 +61,24 @@ clear_local_import_dir = ClearDirectoryOperator(
     dag=dag,
 )
 
+create_local_import_dir_2 = CreateDirectoryOperator(
+    task_id='create_import_dir_2',
+    path='/home/airflow',
+    directory='xkcd2',
+    dag=dag,
+)
+
+clear_local_import_dir_2 = ClearDirectoryOperator(
+    task_id='clear_import_dir_2',
+    directory='/home/airflow/xkcd2',
+    pattern='*',
+    dag=dag,
+)
+
 download_xkcd_latest = HttpDownloadOperator(
     task_id='download_xkcd_latest',
     download_uri='https://xkcd.com//info.0.json',
-    save_to='/home/airflow/xkcd/latest_xkcd.json',
+    save_to='/home/airflow/xkcd2/latest_xkcd.json',
     dag=dag,
 )
 
@@ -88,5 +102,5 @@ last_download_comic = PythonOperator(
 
 
 
-create_local_import_dir >> clear_local_import_dir >> download_xkcd_latest >> last_comic >> last_download_comic
+create_local_import_dir >> clear_local_import_dir >> create_local_import_dir2 >> clear_local_import_dir2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
