@@ -50,7 +50,7 @@ download_xkcd_latest = HttpDownloadOperator(
     dag=dag,
 )
 download_xkcd_oldest= HttpDownloadOperator(
-    task_id='download_xkcd_latest',
+    task_id='download_xkcd_oldest',
     download_uri='https://xkcd.com/1/info.0.json',
     save_to='/home/airflow/xkcd/1.json',
     dag=dag,
