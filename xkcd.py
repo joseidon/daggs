@@ -96,7 +96,13 @@ last_download_comic = PythonOperator(
 
 
 
-#for i in range Variable.get("number_of_comics"):
+for i in range(Variable.get("number_of down"),Variable.get("number_of_comics")):
+    general_xkcd_download = HttpDownloadOperator(
+        task_id='download_xdcd_' + str(i),
+        download_uri='https://xkcd.com/{}/info.0.json'.format(str(i)),
+        save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
+        dag=dag,
+    )
 
 
 
