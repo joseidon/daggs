@@ -102,5 +102,5 @@ last_download_comic = PythonOperator(
 
 
 
-create_local_import_dir >> clear_local_import_dir >> create_local_import_dir2 >> clear_local_import_dir2 >> download_xkcd_latest >> last_comic >> last_download_comic
+create_local_import_dir >> clear_local_import_dir >> create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
