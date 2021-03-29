@@ -28,7 +28,7 @@ def get_number():
         data = json.load(json_file)
         number_of_comics = data['num']
     print(number_of_comics)
-    Variable.set("number_of_Comics", number_of_comics)
+    Variable.set("number_of_comics", number_of_comics)
     return number_of_comics
 
 def get_download_number():
