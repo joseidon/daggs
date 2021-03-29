@@ -37,7 +37,7 @@ def get_download_number():
     latest_download = 1
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     for f in onlyfiles:
-        with open(f) as json_file:
+        with open('{}{}'.format(mypath,f)) as json_file:
             data = json.load(json_file)
             if data['num']>latest_download & data['num']<maxVal:
                 latest_download = data['num']
