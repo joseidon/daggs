@@ -65,7 +65,7 @@ last_comic = PythonOperator(
 
 
 
-for i in range Variable.get("number_of_comics"):
+#for i in range Variable.get("number_of_comics"):
 
 
 
