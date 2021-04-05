@@ -27,5 +27,7 @@ class csvToJsonOperator(BaseOperator):
                 dfs = pandas.DataFrame.from_dict(rj)
                 print(dfs)
                 data.append(dfs)
+        print(data)
         df.append(data,  ignore_index = True)
+        print(df)
         df.to_csv("/home/airflow/final/final.csv")
