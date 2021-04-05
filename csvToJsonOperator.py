@@ -14,7 +14,7 @@ class csvToJsonOperator(BaseOperator):
 
     def execute(self, context):
         mypath = '/home/airflow/xkcd/'
-        df = pandas.DatafFrame()
+        df = pandas.DataFrame()
         latest_download = 1
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
         for f in onlyfiles:
