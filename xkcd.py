@@ -18,7 +18,7 @@ args = {
     'owner': 'airflow'
 }
 
-dag = DAG('xkcd', default_args=args, description='xkcd practical exam',
+dag = DAG('xkcd2', default_args=args, description='xkcd practical exam',
           schedule_interval='56 18 * * *',
           start_date=datetime(2019, 10, 16), catchup=False, max_active_runs=1)
 
@@ -44,7 +44,8 @@ def get_download_number():
                 latest_download = data['num']
     if latest_download == 404:
         latest_download = 405
-    Variable.set("number_of_latest_download", latest_download)
+    #Variable.set("number_of_latest_download", latest_download)
+    Variable.set("number_of_latest_download", 10)
     #return latest_download
     return 10
 
@@ -78,6 +79,20 @@ clear_local_import_dir_2 = ClearDirectoryOperator(
     dag=dag,
 )
 
+create_final_dir = CreateDirectoryOperator(
+    task_id='create_final_dir',
+    path='/home/airflow',
+    directory='final',
+    dag=dag,
+)
+
+clear_final_dir = ClearDirectoryOperator(
+    task_id='clear_final_dir',
+    directory='/home/airflow/final',
+    pattern='*',
+    dag=dag,
+)
+
 download_xkcd_latest = HttpDownloadOperator(
     task_id='download_xkcd_latest',
     download_uri='https://xkcd.com//info.0.json',
@@ -99,6 +114,8 @@ last_download_comic = PythonOperator(
 dummy_op = DummyOperator(
     task_id='dummy1', 
     dag=dag)
+
+
 
 
 
@@ -126,3 +143,4 @@ make_csv_from_json = PythonOperator(
 
 create_local_import_dir >> clear_local_import_dir >> create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
+dummy1 >> create_final_dir >> clear_final_dir
