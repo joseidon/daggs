@@ -32,6 +32,6 @@ class csvToJsonOperator(BaseOperator):
                 data.append(dfs)
         print("Print List:")
         print(data)
-        df.append(data,  ignore_index = True)
+        df.append(data)#,  ignore_index = True
         print(df)
         df.to_csv("/home/airflow/final/final.csv")
