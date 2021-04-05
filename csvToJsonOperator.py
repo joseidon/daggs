@@ -20,4 +20,4 @@ class csvToJsonOperator(BaseOperator):
         for f in onlyfiles:
             with open('{}{}'.format(mypath,f)) as json_file:
                 df.append(pandas.read_json(json_file))
-        df.to_csv("{}/final/".format(mypath))
+        df.to_csv("{}/final/final.csv".format(mypath))
