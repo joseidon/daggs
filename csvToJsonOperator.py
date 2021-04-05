@@ -20,10 +20,12 @@ class csvToJsonOperator(BaseOperator):
         df = pandas.DataFrame(columns = ["month", "num", 'link', 'year', 'news', 'safe_title', 'transscript', 'alt', 'img', 'title', 'day'])
         latest_download = 1
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        data = []
         for f in onlyfiles:
             with open('{}{}'.format(mypath,f)) as json_file:
                 rj = pandas.read_json(json_file, typ = 'series')
                 dfs = pandas.DataFrame.from_dict(rj)
                 print(dfs)
-                df.append(dfs, ignore_index = True)
+                data.append(dfs)
+        df.append(data,  ignore_index = True)
         df.to_csv("/home/airflow/final/final.csv")
