@@ -19,7 +19,7 @@ args = {
     'owner': 'airflow'
 }
 
-dag = DAG('xkcd2', default_args=args, description='xkcd practical exam',
+dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
           schedule_interval='56 18 * * *',
           start_date=datetime(2019, 10, 16), catchup=False, max_active_runs=1)
 
@@ -29,8 +29,10 @@ def get_number():
         data = json.load(json_file)
         number_of_comics = data['num']
     print(number_of_comics)
-    Variable.set("number_of_comics", number_of_comics)
-    return number_of_comics
+    #Variable.set("number_of_comics", number_of_comics)
+    Variable.set("number_of_comics", 10)
+    return 10
+    #return number_of_comics
 
 def get_download_number():
     maxVal = int(Variable.get("number_of_comics"))
@@ -45,10 +47,10 @@ def get_download_number():
                 latest_download = data['num']
     if latest_download == 404:
         latest_download = 405
-    #Variable.set("number_of_latest_download", latest_download)
-    Variable.set("number_of_latest_download", 10)
-    #return latest_download
-    return 10
+    Variable.set("number_of_latest_download", latest_download)
+    #Variable.set("number_of_latest_download", 10)
+    return latest_download
+    #return 10
 
 
 
