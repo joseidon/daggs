@@ -2,7 +2,7 @@ from airflow.models.baseoperator import BaseOperator
 from airflow.utils.decorators import apply_defaults
 import pandas
 
-class HelloOperator(BaseOperator):
+class csvToJsonOperator(BaseOperator):
 
     @apply_defaults
     def __init__(
