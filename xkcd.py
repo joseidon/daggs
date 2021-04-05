@@ -118,7 +118,7 @@ dummy_op = DummyOperator(
     task_id='dummy_op', 
     dag=dag)
 
-make_csv_from_json = csvToJsonOperator.csvToJsonOperator(
+csv_to_json = csvToJsonOperator.csvToJsonOperator(
     task_id='csv_to_json',
     dag=dag)
 
