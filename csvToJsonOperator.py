@@ -27,6 +27,7 @@ class csvToJsonOperator(BaseOperator):
                 dfs = pandas.DataFrame.from_dict(rj)
                 print(dfs)
                 data.append(dfs)
+        print("Print List:")
         print(data)
         df.append(data,  ignore_index = True)
         print(df)
