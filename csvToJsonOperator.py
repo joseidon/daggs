@@ -24,5 +24,6 @@ class csvToJsonOperator(BaseOperator):
             with open('{}{}'.format(mypath,f)) as json_file:
                 rj = pandas.read_json(json_file, typ = 'series')
                 dfs = pandas.DataFrame.from_dict(rj)
+                print(dfs)
                 df.append(dfs, ignore_index = True)
         df.to_csv("/home/airflow/final/final.csv")
