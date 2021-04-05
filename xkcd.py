@@ -135,7 +135,6 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 
 
 make_csv_from_json = csvToJsonOperator.csvToJsonOperator(
-
     task_id='csv_to_json',
     dag=dag)
 
