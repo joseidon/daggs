@@ -45,7 +45,8 @@ def get_download_number():
     if latest_download == 404:
         latest_download = 405
     Variable.set("number_of_latest_download", latest_download)
-    return latest_download
+    #return latest_download
+    return 10
 
 
 
