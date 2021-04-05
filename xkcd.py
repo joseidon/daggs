@@ -25,7 +25,7 @@ dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
 
 def get_number():
     number_of_comics = 0
-    with open('/home/airflow/xkcd2/latest_xkcd.json') as json_file:
+    with open('/home/hadoop/xkcd2/latest_xkcd.json') as json_file:
         data = json.load(json_file)
         number_of_comics = data['num']
     print(number_of_comics)
@@ -36,7 +36,7 @@ def get_number():
 
 def get_download_number():
     maxVal = int(Variable.get("number_of_comics"))
-    mypath = '/home/airflow/xkcd/'
+    mypath = '/home/hadoop/xkcd/'
     latest_download = 1
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     for f in onlyfiles:
@@ -56,42 +56,42 @@ def get_download_number():
 
 create_local_import_dir = CreateDirectoryOperator(
     task_id='create_import_dir',
-    path='/home/airflow',
+    path='/home/hadoop',
     directory='xkcd',
     dag=dag,
 )
 
 clear_local_import_dir = ClearDirectoryOperator(
     task_id='clear_import_dir',
-    directory='/home/airflow/xkcd',
+    directory='/home/hadoop/xkcd',
     pattern='*',
     dag=dag,
 )
 
 create_local_import_dir_2 = CreateDirectoryOperator(
     task_id='create_import_dir_2',
-    path='/home/airflow',
+    path='/home/hadoop',
     directory='xkcd2',
     dag=dag,
 )
 
 clear_local_import_dir_2 = ClearDirectoryOperator(
     task_id='clear_import_dir_2',
-    directory='/home/airflow/xkcd2',
+    directory='/home/hadoop/xkcd2',
     pattern='*',
     dag=dag,
 )
 
 create_final_dir = CreateDirectoryOperator(
     task_id='create_final_dir',
-    path='/home/airflow',
-    directory='final',
+    path='/home/hadoop',
+    directory='raw',
     dag=dag,
 )
 
 clear_final_dir = ClearDirectoryOperator(
     task_id='clear_final_dir',
-    directory='/home/airflow/final',
+    directory='/home/hadoop/raw',
     pattern='*',
     dag=dag,
 )
@@ -99,7 +99,7 @@ clear_final_dir = ClearDirectoryOperator(
 download_xkcd_latest = HttpDownloadOperator(
     task_id='download_xkcd_latest',
     download_uri='https://xkcd.com//info.0.json',
-    save_to='/home/airflow/xkcd2/latest_xkcd.json',
+    save_to='/home/hadoop/xkcd2/latest_xkcd.json',
     dag=dag,
 )
 
@@ -131,7 +131,7 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
     general_xkcd_download = HttpDownloadOperator(
         task_id='download_xdcd_' + str(i),
         download_uri='https://xkcd.com/{}/info.0.json'.format(str(i)),
-        save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
+        save_to='/home/hadoop/xkcd/{}.json'.format(str(i)),
         dag=dag,
     )
     general_xkcd_download.set_upstream(last_download_comic)

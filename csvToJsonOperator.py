@@ -16,7 +16,7 @@ class csvToJsonOperator(BaseOperator):
         #self.task_id = task_id
 
     def execute(self, context):
-        mypath = '/home/airflow/xkcd/'
+        mypath = '/home/hadoop/xkcd/'
         df = pandas.DataFrame(columns = ["month", "num", 'link', 'year', 'news', 'safe_title', 'transscript', 'alt', 'img', 'title', 'day'])
         latest_download = 1
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -35,4 +35,4 @@ class csvToJsonOperator(BaseOperator):
         df = pandas.concat(data, axis=0)
         #df.append(data)#,  ignore_index = True
         print(df)
-        df.to_csv("/home/airflow/final/final.csv")
+        df.to_csv("/home/hadoop/raw/raw.csv")
