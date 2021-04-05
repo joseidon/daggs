@@ -20,7 +20,7 @@ class HelloOperator(BaseOperator):
         for f in onlyfiles:
             with open('{}{}'.format(mypath,f)) as json_file:
                 pandas.read_json(json_file)
-                df.to_csv("{}/final/" mypath)
+                df.to_csv("{}/final/".format(mypath))
 
         df.dump
         return message
