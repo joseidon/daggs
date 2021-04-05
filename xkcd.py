@@ -42,6 +42,8 @@ def get_download_number():
             print(data['num'])
             if data['num']>latest_download & data['num']!= maxVal:
                 latest_download = data['num']
+    if latest_download == 404:
+        latest_download = 405
     Variable.set("number_of_latest_download", latest_download)
     return latest_download
 
@@ -93,6 +95,11 @@ last_download_comic = PythonOperator(
     python_callable=get_download_number,
     dag=dag)
 
+dummy_op = DummyOperator(
+    task_id='dummy1', 
+    dag=dag)
+
+
 
 
 
@@ -104,6 +111,13 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
         dag=dag,
     )
     general_xkcd_download.set_upstream(last_download_comic)
+    dummy_op.set_upstream(general_xkcd_download)
+
+
+make_csv_from_json = PythonOperator(
+    task_id='csv_to_json',
+    python_callable=get_number,
+    dag=dag)
 
 
 
