@@ -122,6 +122,7 @@ dummy_op = DummyOperator(
 
 
 
+
 for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("number_of_comics"))):
     general_xkcd_download = HttpDownloadOperator(
         task_id='download_xdcd_' + str(i),
@@ -133,7 +134,7 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
     dummy_op.set_upstream(general_xkcd_download)
 
 
-make_csv_from_json = PythonOperator(
+make_csv_from_json = csvToJsonOperator(
     task_id='csv_to_json',
     python_callable=get_number,
     dag=dag)
