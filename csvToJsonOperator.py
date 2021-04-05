@@ -7,10 +7,10 @@ class csvToJsonOperator(BaseOperator):
     @apply_defaults
     def __init__(
             self,
-            name: str,
+            task_id: str,
             *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.name = name
+        self.task_id = task_id
 
     def execute(self, context):
         mypath = '/home/airflow/xkcd/'
