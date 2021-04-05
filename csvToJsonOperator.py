@@ -27,7 +27,7 @@ class csvToJsonOperator(BaseOperator):
                 #dfs = pandas.DataFrame(columns = ["month", "num", 'link', 'year', 'news', 'safe_title', 'transscript', 'alt', 'img', 'title', 'day'])
                 dfs = pandas.DataFrame.from_dict(rj)
                 #print(dfs)
-                #dfs = dfs.transpose()
+                dfs = dfs.transpose()
                 print(dfs)
                 data.append(dfs)
         print("Print List:")
