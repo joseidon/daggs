@@ -116,7 +116,9 @@ dummy_op = DummyOperator(
     task_id='dummy_op', 
     dag=dag)
 
-
+make_csv_from_json = csvToJsonOperator.csvToJsonOperator(
+    task_id='csv_to_json',
+    dag=dag)
 
 
 
@@ -134,9 +136,7 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
     dummy_op.set_upstream(general_xkcd_download)
 
 
-make_csv_from_json = csvToJsonOperator.csvToJsonOperator(
-    task_id='csv_to_json',
-    dag=dag)
+
 
 
 
