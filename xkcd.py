@@ -143,4 +143,4 @@ make_csv_from_json = PythonOperator(
 
 create_local_import_dir >> clear_local_import_dir >> create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
-dummy_op >> create_final_dir >> clear_final_dir
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json
