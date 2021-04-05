@@ -24,5 +24,5 @@ class csvToJsonOperator(BaseOperator):
             with open('{}{}'.format(mypath,f)) as json_file:
                 rj = pandas.read_json(json_file, typ = 'series')
                 dfs = pandas.DataFrame.from_dict(rj)
-                df.append(rj)
+                df.append(dfs)
         df.to_csv("{}/final/final.csv".format(mypath))
