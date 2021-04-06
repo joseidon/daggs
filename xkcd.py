@@ -18,6 +18,21 @@ import csvToJsonOperator
 args = {
     'owner': 'airflow'
 }
+ #wip
+hiveSQL_create_table_raw='''
+CREATE EXTERNAL TABLE IF NOT EXISTS raw_data(
+	tconst STRING,
+	title_type STRING,
+	primary_title STRING,
+	original_title STRING,
+	is_adult DECIMAL(1,0),
+	start_year DECIMAL(4,0),
+	end_year STRING,
+	runtime_minutes INT,
+	genres STRING
+) COMMENT 'IMDb Movies' PARTITIONED BY (partition_year int, partition_month int, partition_day int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/imdb/title_basics'
+TBLPROPERTIES ('skip.header.line.count'='1');
+'''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
           schedule_interval='56 18 * * *',
@@ -122,8 +137,26 @@ csv_to_json = csvToJsonOperator.csvToJsonOperator(
     task_id='csv_to_json',
     dag=dag)
 
+create_hdfs_raw_dir = HdfsMkdirFileOperator(
+    task_id='mkdir_hdfs_raw_dir',
+    directory='/user/hadoop/',
+    hdfs_conn_id='raw',
+    dag=dag,
+)
 
+hdfs_put_raw = HdfsPutFileOperator(
+    task_id='upload_raw',
+    local_file="/home/airflow/raw/raw.csv",
+    remote_file='/user/hadoop/raw/raw.csv',
+    hdfs_conn_id='hdfs',
+    dag=dag,
+)
 
+create_HiveTable_raw = HiveOperator(
+    task_id='create_raw_table',
+    hql=hiveSQL_create_table_raw,
+    hive_cli_conn_id='beeline',
+    dag=dag)
 
 
 
@@ -146,4 +179,4 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 
 create_local_import_dir >> clear_local_import_dir >> create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> create_raw_table
