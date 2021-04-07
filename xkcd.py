@@ -104,13 +104,13 @@ clear_local_import_dir_2 = ClearDirectoryOperator(
 create_final_dir = CreateDirectoryOperator(
     task_id='create_final_dir',
     path='/home/airflow',
-    directory='final',
+    directory='raw',
     dag=dag,
 )
 
 clear_final_dir = ClearDirectoryOperator(
     task_id='clear_final_dir',
-    directory='/home/airflow/final',
+    directory='/home/airflow/raw',
     pattern='*',
     dag=dag,
 )
@@ -167,6 +167,7 @@ clean_raw_table = HiveOperator(
     hql=hiveSQL_clean_table,
     hive_cli_conn_id='beeline',
     dag=dag)
+
 
 
 
