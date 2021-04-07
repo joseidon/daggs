@@ -29,7 +29,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS raw_data(
 	alt STRING,
 	title STRING,
     day INT,
-) COMMENT 'raw DATA' PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw/raw.txt'
+) COMMENT 'raw data' PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw/raw'
 TBLPROPERTIES ('skip.header.line.count'='1');
 '''
 
@@ -151,7 +151,7 @@ create_hdfs_raw_dir = HdfsMkdirFileOperator(
 upload_raw = HdfsPutFileOperator(
     task_id='upload_raw',
     local_file="/home/airflow/raw/raw.csv",
-    remote_file='/user/hadoop/raw/raw.txt',
+    remote_file='/user/hadoop/raw/raw.csv',
     hdfs_conn_id='hdfs',
     dag=dag,
 )
