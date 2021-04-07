@@ -21,6 +21,7 @@ args = {
 }
 #year INT,
 hiveSQL_create_table_raw='''
+DROP TABLE raw_data
 CREATE EXTERNAL TABLE raw_data(
 	month INT,
 	num INT,	
