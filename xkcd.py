@@ -21,7 +21,7 @@ args = {
 }
 #year INT,
 hiveSQL_create_table_raw='''
-CREATE EXTERNAL TABLE IF NOT EXISTS raw_data(
+CREATE EXTERNAL TABLE raw_data(
 	month INT,
 	num INT,	
 	safe_title STRING,
