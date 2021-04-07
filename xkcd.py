@@ -162,11 +162,7 @@ create_raw_table = HiveOperator(
     hive_cli_conn_id='beeline',
     dag=dag)
 
-clean_raw_table = HiveOperator(
-    task_id='clean_raw_table',
-    hql=hiveSQL_clean_table,
-    hive_cli_conn_id='beeline',
-    dag=dag)
+
 cleanse_hive_table = HiveOperator(
     task_id='cleanse_hive_table',
     hql=cleanse_table,
