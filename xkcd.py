@@ -20,8 +20,11 @@ args = {
     'owner': 'airflow'
 }
 #year INT,
-hiveSQL_create_table_raw='''
+cleanse_table='''
 DROP TABLE raw_data
+'''
+
+hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE raw_data(
 	month INT,
 	num INT,	
@@ -33,9 +36,6 @@ CREATE EXTERNAL TABLE raw_data(
 TBLPROPERTIES ('skip.header.line.count'='1');
 '''
 
-hiveSQL_clean_table='''
-
-'''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
           schedule_interval='56 18 * * *',
@@ -167,6 +167,12 @@ clean_raw_table = HiveOperator(
     hql=hiveSQL_clean_table,
     hive_cli_conn_id='beeline',
     dag=dag)
+cleanse_hive_table = HiveOperator(
+    task_id='cleanse_hive_table',
+    hql=cleanse_table,
+    hive_cli_conn_id='beeline',
+    dag=dag
+)
 
 
 
@@ -190,4 +196,4 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 #clear_local_import_dir >>
 create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> create_raw_table
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table
