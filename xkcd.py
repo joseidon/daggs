@@ -29,7 +29,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS raw_data(
 	alt STRING,
 	title STRING,
     day INT,
-) COMMENT 'raw data' PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw/raw'
+) PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw/raw'
 TBLPROPERTIES ('skip.header.line.count'='1');
 '''
 
@@ -187,7 +187,7 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 
 
 
-
-create_local_import_dir >> clear_local_import_dir >> create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
+#clear_local_import_dir >>
+create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
 dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> create_raw_table
