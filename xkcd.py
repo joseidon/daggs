@@ -170,15 +170,15 @@ clean_raw_table = HiveOperator(
 
 
 
-#for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("number_of_comics"))):
-#    general_xkcd_download = HttpDownloadOperator(
-#        task_id='download_xdcd_' + str(i),
-#        download_uri='https://xkcd.com/{}/info.0.json'.format(str(i)),
-#        save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
-#        dag=dag,
-#    )
-#    general_xkcd_download.set_upstream(last_download_comic)
-#    dummy_op.set_upstream(general_xkcd_download)
+for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("number_of_comics"))):
+    general_xkcd_download = HttpDownloadOperator(
+        task_id='download_xdcd_' + str(i),
+        download_uri='https://xkcd.com/{}/info.0.json'.format(str(i)),
+        save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
+        dag=dag,
+    )
+    general_xkcd_download.set_upstream(last_download_comic)
+    dummy_op.set_upstream(general_xkcd_download)
 
 
 
