@@ -28,7 +28,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS raw_data(
 	safe_title STRING,
 	alt STRING,
 	title STRING,
-    day INT,
+    day INT
 ) PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw/raw'
 TBLPROPERTIES ('skip.header.line.count'='1');
 '''
