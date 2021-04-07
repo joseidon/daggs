@@ -29,7 +29,7 @@ class csvToJsonOperator(BaseOperator):
                 #print(dfs)
                 
                 dfs = dfs.transpose()
-                dfs.replace("\n", " ")
+                dfs =dfs.replace(r'\\n',' ', regex=True) 
                 print(dfs)
                 data.append(dfs)
         print("Print List:")
