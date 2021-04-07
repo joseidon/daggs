@@ -143,8 +143,8 @@ csv_to_json = csvToJsonOperator.csvToJsonOperator(
 
 create_hdfs_raw_dir = HdfsMkdirFileOperator(
     task_id='mkdir_hdfs_raw_dir',
-    directory='/user/hadoop/',
-    hdfs_conn_id='raw',
+    directory='/user/hadoop/raw',
+    hdfs_conn_id='hdfs',
     dag=dag,
 )
 
