@@ -19,12 +19,11 @@ import pandas as pd
 args = {
     'owner': 'airflow'
 }
- #wip
+#year INT,
 hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE IF NOT EXISTS raw_data(
 	month INT,
-	num INT,
-	year INT,
+	num INT,	
 	safe_title STRING,
 	alt STRING,
 	title STRING,
