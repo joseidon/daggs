@@ -156,13 +156,13 @@ upload_raw = HdfsPutFileOperator(
     dag=dag,
 )
 
-create_HiveTable_raw = HiveOperator(
+create_raw_table = HiveOperator(
     task_id='create_raw_table',
     hql=hiveSQL_create_table_raw,
     hive_cli_conn_id='beeline',
     dag=dag)
 
-clean_HiveTable_raw = HiveOperator(
+clean_raw_table = HiveOperator(
     task_id='clean_raw_table',
     hql=hiveSQL_clean_table,
     hive_cli_conn_id='beeline',
