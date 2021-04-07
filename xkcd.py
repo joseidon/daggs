@@ -148,7 +148,7 @@ create_hdfs_raw_dir = HdfsMkdirFileOperator(
     dag=dag,
 )
 
-hdfs_put_raw = HdfsPutFileOperator(
+upload_raw = HdfsPutFileOperator(
     task_id='upload_raw',
     local_file="/home/airflow/raw/raw.csv",
     remote_file='/user/hadoop/raw/raw.txt',
