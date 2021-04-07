@@ -14,6 +14,7 @@ import json
 from os import listdir
 from os.path import isfile, join
 import csvToJsonOperator
+import pandas as pd
 
 args = {
     'owner': 'airflow'
@@ -23,16 +24,17 @@ hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE IF NOT EXISTS raw_data(
 	month INT,
 	num INT,
-	link STRING,
 	year INT,
-	news STRING,
 	safe_title STRING,
-	transcript STRING,
 	alt STRING,
 	title STRING,
     day INT,
-) COMMENT 'raw DATA' PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/imdb/title_basics'
+) COMMENT 'raw DATA' PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw/raw.txt'
 TBLPROPERTIES ('skip.header.line.count'='1');
+'''
+
+hiveSQL_clean_table='''
+
 '''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
@@ -67,6 +69,7 @@ def get_download_number():
     #Variable.set("number_of_latest_download", 10)
     return latest_download
     #return 10
+
 
 
 
@@ -148,7 +151,7 @@ create_hdfs_raw_dir = HdfsMkdirFileOperator(
 hdfs_put_raw = HdfsPutFileOperator(
     task_id='upload_raw',
     local_file="/home/airflow/raw/raw.csv",
-    remote_file='/user/hadoop/raw/raw.csv',
+    remote_file='/user/hadoop/raw/raw.txt',
     hdfs_conn_id='hdfs',
     dag=dag,
 )
@@ -156,6 +159,12 @@ hdfs_put_raw = HdfsPutFileOperator(
 create_HiveTable_raw = HiveOperator(
     task_id='create_raw_table',
     hql=hiveSQL_create_table_raw,
+    hive_cli_conn_id='beeline',
+    dag=dag)
+
+clean_HiveTable_raw = HiveOperator(
+    task_id='clean_raw_table',
+    hql=hiveSQL_clean_table,
     hive_cli_conn_id='beeline',
     dag=dag)
 
