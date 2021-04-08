@@ -11,7 +11,7 @@ from airflow.operators.hive_operator import HiveOperator
 #from airflow.operators.mysql_operator import MOperator
 from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
-#from airflow.operators.hive_to_mysql import HiveToMySQL
+from airflow.operators.hive_to_mysql import HiveToMySQL
 import json
 from os import listdir
 from os.path import isfile, join
