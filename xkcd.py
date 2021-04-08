@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS raw_data
 
 hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE raw_data(
+    index INT,
 	month INT,
 	num INT,
     year INT,	
@@ -34,10 +35,41 @@ CREATE EXTERNAL TABLE raw_data(
 	alt STRING,
 	title STRING,
     day INT
-) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
+) PARTITIONED BY(year INT)ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
 TBLPROPERTIES ('skip.header.line.count'='1');
 '''
 
+hiveQL_create_partitioned='''
+CREATE TABLE IF NOT EXISTS data (
+    month INT,
+	num INT,
+	safe_title STRING,
+    transcript STRING,
+	alt STRING,
+	title STRING,
+    day INT
+) PARTITIONED BY(year)STORED AS TEXTFILE LOCATION '/user/hadoop/raw';
+'''
+
+hiveSQL_partitioned = '''
+INSERT OVERWRITE TABLE data
+SELECT
+    m.month,
+    m.INT,
+    m.safe_title,
+    m.transcript,
+    m.alt,
+    m.title
+    m.day
+FROM
+    raw_data m
+    JOIN title_ratings r ON (m.tconst = r.tconst)
+WHERE
+    m.partition_year = {{ macros.ds_format(ds, "%Y-%m-%d", "%Y")}} and m.partition_month = {{ macros.ds_format(ds, "%Y-%m-%d", "%m")}} and m.partition_day = {{ macros.ds_format(ds, "%Y-%m-%d", "%d")}}
+    AND r.partition_year = {{ macros.ds_format(ds, "%Y-%m-%d", "%Y")}} and r.partition_month = {{ macros.ds_format(ds, "%Y-%m-%d", "%m")}} and r.partition_day = {{ macros.ds_format(ds, "%Y-%m-%d", "%d")}}
+    AND r.num_votes > 200000 AND r.average_rating > 8.6
+    AND m.title_type = 'movie' AND m.start_year > 2000
+'''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
           schedule_interval='56 18 * * *',
