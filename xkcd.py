@@ -193,7 +193,6 @@ postgreCreate = PostgresOperator(
     task_id = 'postgeCreate',
     postgres_conn_id = "postgres_default",
     sql = postgresCreate,
-    database = "mydb",
     dag=dag
 )
 
