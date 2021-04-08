@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS data (
 ) PARTITIONED BY(year)STORED AS TEXTFILE LOCATION '/user/hadoop/raw';
 '''
 postgresCreate='''
-CREATE TABLE md.data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY num);
+CREATE TABLE md.data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY (num));
 '''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
