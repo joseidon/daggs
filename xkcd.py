@@ -140,11 +140,6 @@ download_xkcd_latest = HttpDownloadOperator(
     dag=dag,
 )
 
-postgreCreate = PostgresOperator(
-    task_id = 'postgeCreate',
-    sql = postgresCreate,
-    dag=dag
-)
 
 
 last_comic = PythonOperator(
@@ -194,11 +189,13 @@ cleanse_hive_table = HiveOperator(
     dag=dag
 )
 
-#to_mysql = HiveToMySqlOperator(
-#    task_id='to_mysql',
-#    dag=dag
-#)
-
+postgreCreate = PostgresOperator(
+    task_id = 'postgeCreate',
+    postgres_conn_id = "postgres_default"
+    sql = postgresCreate,
+    database = "mydb"
+    dag=dag
+)
 
 
 
