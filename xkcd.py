@@ -8,7 +8,7 @@ from airflow.operators.hdfs_operations import HdfsPutFileOperator, HdfsGetFileOp
 from airflow.operators.filesystem_operations import CreateDirectoryOperator
 from airflow.operators.filesystem_operations import ClearDirectoryOperator
 from airflow.operators.hive_operator import HiveOperator
-from airflow.operators.mysql_operator import MOperator
+#from airflow.operators.mysql_operator import MOperator
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
@@ -26,7 +26,6 @@ args = {
 cleanse_table='''
 DROP TABLE IF EXISTS raw_data
 '''
-
 
 hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE raw_data(
@@ -55,25 +54,8 @@ CREATE TABLE IF NOT EXISTS data (
     day INT
 ) PARTITIONED BY(year)STORED AS TEXTFILE LOCATION '/user/hadoop/raw';
 '''
-
-hiveSQL_partitioned = '''
-INSERT OVERWRITE TABLE data
-SELECT
-    m.month,
-    m.INT,
-    m.safe_title,
-    m.transcript,
-    m.alt,
-    m.title
-    m.day
-FROM
-    raw_data m
-    JOIN title_ratings r ON (m.tconst = r.tconst)
-WHERE
-    m.partition_year = {{ macros.ds_format(ds, "%Y-%m-%d", "%Y")}} and m.partition_month = {{ macros.ds_format(ds, "%Y-%m-%d", "%m")}} and m.partition_day = {{ macros.ds_format(ds, "%Y-%m-%d", "%d")}}
-    AND r.partition_year = {{ macros.ds_format(ds, "%Y-%m-%d", "%Y")}} and r.partition_month = {{ macros.ds_format(ds, "%Y-%m-%d", "%m")}} and r.partition_day = {{ macros.ds_format(ds, "%Y-%m-%d", "%d")}}
-    AND r.num_votes > 200000 AND r.average_rating > 8.6
-    AND m.title_type = 'movie' AND m.start_year > 2000
+postgresCreate='''
+CREATE TABLE md.data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY num);
 '''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
@@ -122,12 +104,6 @@ create_local_import_dir = CreateDirectoryOperator(
     dag=dag,
 )
 
-#clear_local_import_dir = ClearDirectoryOperator(
-#    task_id='clear_import_dir',
-#    directory='/home/airflow/xkcd',
-#    pattern='*',
-#   dag=dag,
-#)
 
 create_local_import_dir_2 = CreateDirectoryOperator(
     task_id='create_import_dir_2',
@@ -162,6 +138,12 @@ download_xkcd_latest = HttpDownloadOperator(
     download_uri='https://xkcd.com//info.0.json',
     save_to='/home/airflow/xkcd2/latest_xkcd.json',
     dag=dag,
+)
+
+postgreCreate = PostgresOperator(
+    task_id = 'postgeCreate',
+    sql = postgresCreate,
+    dag=dag
 )
 
 
@@ -240,4 +222,4 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 #clear_local_import_dir >>
 create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table# >> to_mysql
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> postgreCreate# >> to_mysql
