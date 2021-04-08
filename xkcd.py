@@ -21,7 +21,7 @@ args = {
 }
 #year INT,
 cleanse_table='''
-DROP TABLE raw_data
+DROP TABLE IF EXISTS raw_data
 '''
 
 hiveSQL_create_table_raw='''
