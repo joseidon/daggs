@@ -30,6 +30,7 @@ class csvToJsonOperator(BaseOperator):
                 
                 dfs = dfs.transpose()
                 dfs = dfs.drop(labels = ["link","news"], axis=1,)
+                dfs = dfs.reset_index(drop=True)
                 dfs =dfs.replace(r'\n',' ', regex=True) 
                 print(dfs)
                 data.append(dfs)
