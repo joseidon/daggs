@@ -32,6 +32,7 @@ CREATE EXTERNAL TABLE raw_data(
 	safe_title STRING,
     transcript STRING,
 	alt STRING,
+    img STRING,
 	title STRING,
     day INT,
     years INT
