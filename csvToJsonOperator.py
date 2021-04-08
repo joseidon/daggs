@@ -39,7 +39,7 @@ class csvToJsonOperator(BaseOperator):
         df = pandas.concat(data, axis=0, ignore_index=True)
         df['years'] = df['year']
         print(df)
-        df.drop(labels = ["year"], axis = 1,)
+        df.drop(columns='year')
         #df.drop(labels = ["link","news"], axis=1,)
         #df.append(data)#,  ignore_index = True
         print(df)
