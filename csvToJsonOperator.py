@@ -17,7 +17,7 @@ class csvToJsonOperator(BaseOperator):
 
     def execute(self, context):
         mypath = '/home/airflow/xkcd/'
-        df = pandas.DataFrame(columns = ["month", "num", 'year', 'safe_title', 'alt', 'img', 'title', 'day'])
+        df = pandas.DataFrame(columns = ["month", "num", 'year', 'safe_title', 'transcript', 'alt', 'img', 'title', 'day'])
         latest_download = 1
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
         data = []
@@ -29,13 +29,14 @@ class csvToJsonOperator(BaseOperator):
                 #print(dfs)
                 
                 dfs = dfs.transpose()
-                dfs =dfs.replace(r'\\n',' ', regex=True) 
+                dfs = dfs.drop(labels = ["link","news"], axis=1,)
+                dfs =dfs.replace(r'\n',' ', regex=True) 
                 print(dfs)
                 data.append(dfs)
         print("Print List:")
         #print(data)df.append([1,2,3,4,5,6,7,8,9,0,11,12])
         df = pandas.concat(data, axis=0)
-        df.drop(labels = ["link","news","transcript"], axis=1,)
+        #df.drop(labels = ["link","news"], axis=1,)
         #df.append(data)#,  ignore_index = True
         print(df)
         df.to_csv("/home/airflow/raw/raw.csv")

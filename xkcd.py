@@ -29,6 +29,7 @@ CREATE EXTERNAL TABLE raw_data(
 	month INT,
 	num INT,	
 	safe_title STRING,
+    transcript STRING,
 	alt STRING,
 	title STRING,
     day INT
