@@ -27,13 +27,14 @@ DROP TABLE IF EXISTS raw_data
 hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE raw_data(
 	month INT,
-	num INT,	
+	num INT,
+    year INT,	
 	safe_title STRING,
     transcript STRING,
 	alt STRING,
 	title STRING,
     day INT
-) PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
+) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
 TBLPROPERTIES ('skip.header.line.count'='1');
 '''
 
