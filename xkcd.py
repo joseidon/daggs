@@ -28,8 +28,7 @@ hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE raw_data(
     index INT,
 	month INT,
-	num INT,
-    year INT,	
+	num INT,	
 	safe_title STRING,
     transcript STRING,
 	alt STRING,
