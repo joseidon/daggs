@@ -77,6 +77,9 @@ dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
           schedule_interval='56 18 * * *',
           start_date=datetime(2019, 10, 16), catchup=False, max_active_runs=1)
 
+Variable.set("number_of_latest_download", 0)
+Variable.set("number_of_comics", 1)
+
 def get_number():
     number_of_comics = 0
     with open('/home/airflow/xkcd2/latest_xkcd.json') as json_file:
