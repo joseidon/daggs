@@ -33,8 +33,9 @@ CREATE EXTERNAL TABLE raw_data(
     transcript STRING,
 	alt STRING,
 	title STRING,
-    day INT
-) PARTITIONED BY(years INT)ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
+    day INT,
+    years INT
+)ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
 TBLPROPERTIES ('skip.header.line.count'='1');
 '''
 
