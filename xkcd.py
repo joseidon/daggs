@@ -211,11 +211,10 @@ cleanse_hive_table = HiveOperator(
     dag=dag
 )
 
-to_mysql = HiveToMySqlOperator(
-    task_id='to_mysql',
-
-    dag=dag
-)
+#to_mysql = HiveToMySqlOperator(
+#    task_id='to_mysql',
+#    dag=dag
+#)
 
 
 
