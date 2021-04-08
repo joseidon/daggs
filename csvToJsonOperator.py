@@ -35,6 +35,7 @@ class csvToJsonOperator(BaseOperator):
                 #df['years'] = df['year']
                 #df.drop(columns=["year"])
                 dfs = dfs.reset_index(drop=True)
+                dfs =dfs.replace(r'\t',' ', regex=True) 
                 dfs =dfs.replace(r'\n',' ', regex=True) 
                 print(dfs)
                 data.append(dfs)
