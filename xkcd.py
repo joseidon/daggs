@@ -8,9 +8,10 @@ from airflow.operators.hdfs_operations import HdfsPutFileOperator, HdfsGetFileOp
 from airflow.operators.filesystem_operations import CreateDirectoryOperator
 from airflow.operators.filesystem_operations import ClearDirectoryOperator
 from airflow.operators.hive_operator import HiveOperator
+from airflow.operators.mysql_operator import MOperator
 from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
-from airflow.providers.apache.hive.transfers.hive_to_mysql as HiveToMySQL
+from airflow.operators.hive_to_mysql as HiveToMySQL
 import json
 from os import listdir
 from os.path import isfile, join
@@ -24,6 +25,7 @@ args = {
 cleanse_table='''
 DROP TABLE IF EXISTS raw_data
 '''
+
 
 hiveSQL_create_table_raw='''
 CREATE EXTERNAL TABLE raw_data(
