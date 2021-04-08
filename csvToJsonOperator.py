@@ -32,7 +32,7 @@ class csvToJsonOperator(BaseOperator):
                 dfs = dfs.drop(labels = ["link","news"], axis=1,)
                 dfs = dfs.insert(9,"years",dfs["year"], True)
                 #df['years'] = df['year']
-                df.drop(columns='year')
+                df.drop(columns=["year"])
                 dfs = dfs.reset_index(drop=True)
                 dfs =dfs.replace(r'\n',' ', regex=True) 
                 print(dfs)
