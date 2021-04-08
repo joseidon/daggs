@@ -191,7 +191,7 @@ cleanse_hive_table = HiveOperator(
 
 postgreCreate = PostgresOperator(
     task_id = 'postgeCreate',
-    postgres_conn_id = "postgres_default"
+    postgres_conn_id = "postgres_default",
     sql = postgresCreate,
     database = "mydb"
     dag=dag
