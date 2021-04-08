@@ -10,7 +10,7 @@ from airflow.operators.filesystem_operations import ClearDirectoryOperator
 from airflow.operators.hive_operator import HiveOperator
 from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
-from airflow.providers.apache.hive.transfers.hive_to_mysql.HiveToMySqlOperator as HiveToMySQL
+#from airflow.providers.apache.hive.transfers.hive_to_mysql.HiveToMySqlOperator as HiveToMySQL
 import json
 from os import listdir
 from os.path import isfile, join
