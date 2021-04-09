@@ -39,7 +39,7 @@ class csvToJsonOperator(BaseOperator):
                 dfs = dfs.reset_index(drop=True)
                 dfs =dfs.replace(r'\t',' ', regex=True) 
                 dfs =dfs.replace(r'\n',' ', regex=True) 
-                dfs =dfs.replace('*',' ', regex=True) 
+                #dfs =dfs.replace('*',' ', regex=True) 
                 #dfs["safe_title"] =str(dfs["safe_title"]).encode("ascii", "replace")
                 #dfs["transcript"] =str(dfs["transcript"]).encode("ascii", "replace")
                 #dfs["alt"] =str(dfs["alt"]).encode("ascii", "replace")
