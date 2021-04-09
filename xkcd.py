@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS data (
 ) PARTITIONED BY(year)STORED AS TEXTFILE LOCATION '/user/hadoop/raw';
 '''
 postgresCreate='''
-CREATE TABLE IF NOT EXISTS data (index INT, alt VARCHAR(5000), extra_parts VARCHAR(5000) , img VARCHAR(5000),num INT, safe_title VARCHAR(5000), title VARCHAR(5000), transcript VARCHAR(5000), PRIMARY KEY (num));'''
+CREATE TABLE IF NOT EXISTS data (index INT, alt VARCHAR(5000), extra_parts VARCHAR(5000) , img VARCHAR(5000),num INT, safe_title VARCHAR(5000), title VARCHAR(5000), transcript VARCHAR(15000), PRIMARY KEY (num));'''
 postgresClear='''
 DROP TABLE data
 '''
