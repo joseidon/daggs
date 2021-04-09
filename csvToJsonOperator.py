@@ -45,14 +45,14 @@ class csvToJsonOperator(BaseOperator):
                 #dfs["alt"] =str(dfs["alt"]).encode("ascii", "replace")
                 #dfs["title"] =str(dfs["title"]).encode("ascii", "replace")
                 #print(dfs)
-                if f!=1913:
-                    data.append(dfs)
+                #if f!=1913:
+                data.append(dfs)
         print("Print List:")
         #print(data)df.append([1,2,3,4,5,6,7,8,9,0,11,12])
         df = pandas.concat(data, axis=0, ignore_index=True)
 
         #df.drop(labels = ["link","news"], axis=1,)
         #df.append(data)#,  ignore_index = True
-        print(df)
+        #print(df)
         df.to_csv("/home/airflow/raw/raw.tsv", sep=';', header=False, encoding="ascii")
         
