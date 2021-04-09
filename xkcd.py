@@ -233,7 +233,7 @@ postgreCreate = PostgresOperator(
 )
 
 postgreClear = PostgresOperator(
-    task_id = 'postgreCreate',
+    task_id = 'postgreClear',
     postgres_conn_id = "postgres_default",
     sql = postgresClear,
     dag=dag
