@@ -90,8 +90,8 @@ def get_number():
         year = data['year']
     print(number_of_comics)
     
-    #Variable.set("number_of_comics", number_of_comics)
-    Variable.set("number_of_comics", 10)
+    Variable.set("number_of_comics", number_of_comics)
+    #Variable.set("number_of_comics", 10)
     return 10
     #return number_of_comics
 
