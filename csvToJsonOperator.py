@@ -22,6 +22,7 @@ class csvToJsonOperator(BaseOperator):
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
         data = []
         for f in onlyfiles:
+            print('{}{}'.format(mypath,f))
             with open('{}{}'.format(mypath,f)) as json_file:
                 rj = pandas.read_json(json_file, typ = 'series', encoding='utf16')
                 #dfs = pandas.DataFrame(columns = ["month", "num", 'link', 'year', 'news', 'safe_title', 'transscript', 'alt', 'img', 'title', 'day'])
