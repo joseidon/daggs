@@ -55,7 +55,14 @@ CREATE TABLE IF NOT EXISTS data (
 ) PARTITIONED BY(year)STORED AS TEXTFILE LOCATION '/user/hadoop/raw';
 '''
 postgresCreate='''
-CREATE TABLE data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY (num));
+CREATE TABLE IF NOT EXISTS data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY (num));
+'''
+
+postgresFill='''
+COPY data 
+FROM '/home/airflow/raw/raw.tsv'
+DELIMITER E'\t'
+CSV HEADER;
 '''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
@@ -196,6 +203,14 @@ postgreCreate = PostgresOperator(
     dag=dag
 )
 
+postgreFill = PostgresOperator(
+    task_id = 'postgeFill',
+    postgres_conn_id = "postgres_default",
+    sql = postgresFill,
+    dag=dag
+)
+
+
 
 
 
@@ -218,4 +233,4 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 #clear_local_import_dir >>
 create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> postgreCreate# >> to_mysql
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> postgreCreate >> postgreFill
