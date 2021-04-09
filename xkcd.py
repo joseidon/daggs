@@ -19,6 +19,7 @@ from os import listdir
 from os.path import isfile, join
 import csvToJsonOperator
 import pandas as pd
+from airflow.hooks.postgres_hook import PostgresHook
 
 args = {
     'owner': 'airflow'
@@ -102,6 +103,12 @@ def get_download_number():
     #Variable.set("number_of_latest_download", 10)
     return latest_download
     #return 10
+
+def postgresFilling():
+    postgresHook = PostgresHook(postgres_conn_id="postgres_default")
+    csv_file = "/home/airflow/final.tsv"
+    postgresHook.copy_expert("COPY data FROM STDIN DELIMITER '\t' CSV", csv_file)
+
 
 
 
@@ -213,12 +220,12 @@ postgreCreate = PostgresOperator(
     dag=dag
 )
 
-postgreFill = PostgresOperator(
-    task_id = 'postgeFill',
-    postgres_conn_id = "postgres_default",
-    sql = postgresFill,
+postgreFill = PythonOperator(
+    task_id = "postreFill"
+    python_callable = postgresFilling,
     dag=dag
 )
+
 
 setPerm = BashOperator(
     task_id='setPerm',
