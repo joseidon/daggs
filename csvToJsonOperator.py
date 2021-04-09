@@ -54,5 +54,5 @@ class csvToJsonOperator(BaseOperator):
         #df.drop(labels = ["link","news"], axis=1,)
         #df.append(data)#,  ignore_index = True
         print(df)
-        df.to_csv("/home/airflow/raw/raw.tsv", sep=';', header=False)
+        df.to_csv("/home/airflow/raw/raw.tsv", sep=';', header=False, encoding="ascii")
         
