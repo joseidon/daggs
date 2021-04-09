@@ -58,11 +58,11 @@ CREATE TABLE IF NOT EXISTS data (
 ) PARTITIONED BY(year)STORED AS TEXTFILE LOCATION '/user/hadoop/raw';
 '''
 postgresCreate='''
-CREATE TABLE IF NOT EXISTS data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), img VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY (num));
+CREATE TABLE IF NOT EXISTS airflow.data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), img VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY (num));
 '''
 
 postgresFill='''
-COPY data 
+COPY airflow.data 
 FROM '/home/airflow/final.tsv'
 DELIMITER E'\t'
 CSV HEADER;
