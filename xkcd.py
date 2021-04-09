@@ -198,6 +198,7 @@ cleanse_hive_table = HiveOperator(
 
 download_from_hdfs = HdfsGetFileOperator(
     task_id = "download_from_hdfs",
+    hdfs_conn_id = 'beeline',
     remote_file = "/user/hadoop/raw/raw.tsv",
     local_file ="/home/airflow/final.tsv",
     dag=dag
