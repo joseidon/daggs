@@ -91,7 +91,7 @@ def get_number():
     print(number_of_comics)
     
     #Variable.set("number_of_comics", number_of_comics)
-    Variable.set("number_of_comics", 20)
+    Variable.set("number_of_comics", 10)
     return 10
     #return number_of_comics
 
@@ -115,7 +115,7 @@ def get_download_number():
 
 def postgresFilling():
     postgresHook = PostgresHook(postgres_conn_id="postgres_default")
-    csv_file = "/home/airflow/final.tsv"
+    csv_file = "/home/airflow/raw/final.tsv"
     postgresHook.copy_expert("COPY data FROM STDIN", csv_file)
 
 #STDIN DELIMITER '\t' CSV"
@@ -263,4 +263,5 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 #clear_local_import_dir >>
 create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> download_from_hdfs >> setPerm >> postgreCreate >> postgreFill
+#dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> download_from_hdfs >> setPerm >> postgreCreate >> postgreFill
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >> postgreCreate >> postgreFill
