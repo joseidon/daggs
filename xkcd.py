@@ -65,6 +65,9 @@ CREATE TABLE IF NOT EXISTS data (
 postgresCreate='''
 CREATE TABLE IF NOT EXISTS data (index INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), img VARCHAR(1000), title VARCHAR(1000), PRIMARY KEY (num));
 '''
+postgresClear='''
+DROP TABLE data
+'''
 
 postgresFill='''
 COPY data 
@@ -232,7 +235,7 @@ postgreCreate = PostgresOperator(
 postgreClear = PostgresOperator(
     task_id = 'postgeCreate',
     postgres_conn_id = "postgres_default",
-    sql = "DROP TABLE data",
+    sql = postgresClear,
     dag=dag
 )
 
