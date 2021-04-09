@@ -63,7 +63,7 @@ postgresFill='''
 COPY data 
 FROM '/home/airflow/final.tsv'
 DELIMITER E'\t'
-TSV HEADER;
+CSV HEADER;
 '''
 
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
