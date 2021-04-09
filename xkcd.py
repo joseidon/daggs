@@ -116,7 +116,7 @@ def get_download_number():
 def postgresFilling():
     postgresHook = PostgresHook(postgres_conn_id="postgres_default")
     csv_file = "/home/airflow/raw/raw.tsv"
-    postgresHook.copy_expert("COPY data FROM STDIN DELIMITER '\t' CSV", csv_file)
+    postgresHook.copy_expert("COPY data FROM STDIN DELIMITER ';' CSV", csv_file)
 
 #STDIN DELIMITER '\t' CSV"
 
@@ -185,42 +185,42 @@ csv_to_json = csvToJsonOperator.csvToJsonOperator(
     task_id='csv_to_json',
     dag=dag)
 
-create_hdfs_raw_dir = HdfsMkdirFileOperator(
-    task_id='mkdir_hdfs_raw_dir',
-    directory='/user/hadoop/raw',
-    hdfs_conn_id='hdfs',
-    dag=dag,
-)
+#create_hdfs_raw_dir = HdfsMkdirFileOperator(
+#    task_id='mkdir_hdfs_raw_dir',
+#    directory='/user/hadoop/raw',
+#    hdfs_conn_id='hdfs',
+#    dag=dag,
+#)
 
-upload_raw = HdfsPutFileOperator(
-    task_id='upload_raw',
-    local_file="/home/airflow/raw/raw.tsv",
-    remote_file='/user/hadoop/raw/raw{{ ds }}.tsv',
-    hdfs_conn_id='hdfs',
-    dag=dag,
-)
+#upload_raw = HdfsPutFileOperator(
+#    task_id='upload_raw',
+#    local_file="/home/airflow/raw/raw.tsv",
+#    remote_file='/user/hadoop/raw/raw{{ ds }}.tsv',
+#    hdfs_conn_id='hdfs',
+#    dag=dag,
+#)
 
-create_raw_table = HiveOperator(
-    task_id='create_raw_table',
-    hql=hiveSQL_create_table_raw,
-    hive_cli_conn_id='beeline',
-    dag=dag)
+#create_raw_table = HiveOperator(
+#    task_id='create_raw_table',
+#    hql=hiveSQL_create_table_raw,
+#    hive_cli_conn_id='beeline',
+#    dag=dag)
+#
 
+#cleanse_hive_table = HiveOperator(
+#    task_id='cleanse_hive_table',
+#    hql=cleanse_table,
+#    hive_cli_conn_id='beeline',
+#    dag=dag
+#)
 
-cleanse_hive_table = HiveOperator(
-    task_id='cleanse_hive_table',
-    hql=cleanse_table,
-    hive_cli_conn_id='beeline',
-    dag=dag
-)
-
-download_from_hdfs = HdfsGetFileOperator(
-    task_id = "download_from_hdfs",
-    hdfs_conn_id = 'hdfs',
-    remote_file = "/user/hadoop/raw/raw.tsv",
-    local_file ="/home/airflow/final.tsv",
-    dag=dag
-)
+#download_from_hdfs = HdfsGetFileOperator(
+#    task_id = "download_from_hdfs",
+#    hdfs_conn_id = 'hdfs',
+#    remote_file = "/user/hadoop/raw/raw.tsv",
+#    local_file ="/home/airflow/final.tsv",
+#    dag=dag
+#)
 
 postgreCreate = PostgresOperator(
     task_id = 'postgeCreate',
@@ -238,7 +238,7 @@ postgreFill = PythonOperator(
 
 setPerm = BashOperator(
     task_id='setPerm',
-    bash_command='chmod -v 777 /home/airflow/final.tsv',
+    bash_command='chmod -v 777 /home/airflow/raw/raw.tsv',
     dag=dag,
 )
 
@@ -264,4 +264,4 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
 #dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> download_from_hdfs >> setPerm >> postgreCreate >> postgreFill
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >> postgreCreate >> postgreFill
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >> setPerm >> postgreCreate >> postgreFill
