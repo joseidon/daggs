@@ -4,6 +4,7 @@ import pandas
 import json
 from os import listdir
 from os.path import isfile, join
+import unicodedata
 
 class csvToJsonOperator(BaseOperator):
 
@@ -38,7 +39,11 @@ class csvToJsonOperator(BaseOperator):
                 #df.drop(columns=["year"])
                 dfs = dfs.reset_index(drop=True)
                 dfs =dfs.replace(r'\t',' ', regex=True) 
-                dfs =dfs.replace(r'\n',' ', regex=True) 
+                dfs =dfs.replace(r'\n',' ', regex=True)
+                dfs['safe_title'].apply(lambda val: unicodedata.normalize('NFKD', val).encode('ascii', 'ignore').decode()
+                dfs['transcript'].apply(lambda val: unicodedata.normalize('NFKD', val).encode('ascii', 'ignore').decode()
+                dfs['alt'].apply(lambda val: unicodedata.normalize('NFKD', val).encode('ascii', 'ignore').decode()
+                dfs['title'].apply(lambda val: unicodedata.normalize('NFKD', val).encode('ascii', 'ignore').decode() 
                 #dfs =dfs.replace('*',' ', regex=True) 
                 #dfs["safe_title"] =str(dfs["safe_title"]).encode("ascii", "replace")
                 #dfs["transcript"] =str(dfs["transcript"]).encode("ascii", "replace")
