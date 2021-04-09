@@ -24,6 +24,7 @@ class csvToJsonOperator(BaseOperator):
         for f in onlyfiles:
             print('{}{}'.format(mypath,f))
             with open('{}{}'.format(mypath,f)) as json_file:
+                #print("still alive")
                 rj = pandas.read_json(json_file, typ = 'series', encoding='utf16')
                 #dfs = pandas.DataFrame(columns = ["month", "num", 'link', 'year', 'news', 'safe_title', 'transscript', 'alt', 'img', 'title', 'day'])
                 dfs = pandas.DataFrame.from_dict(rj)
@@ -38,7 +39,7 @@ class csvToJsonOperator(BaseOperator):
                 dfs = dfs.reset_index(drop=True)
                 dfs =dfs.replace(r'\t',' ', regex=True) 
                 dfs =dfs.replace(r'\n',' ', regex=True) 
-                print(dfs)
+                #print(dfs)
                 data.append(dfs)
         print("Print List:")
         #print(data)df.append([1,2,3,4,5,6,7,8,9,0,11,12])
