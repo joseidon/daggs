@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS data (month INT, num INT, safe_title VARCHAR(1000), t
 
 postgresFill='''
 COPY data 
-FROM '/home/airflow/raw/raw.tsv'
+FROM '/home/airflow/final.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 '''
@@ -196,6 +196,12 @@ cleanse_hive_table = HiveOperator(
     dag=dag
 )
 
+download_from_hdfs = HdfsGetFileOperator(
+    task_id = "download_from_hdfs",
+    remote_file = "/user/hadoop/raw/raw.tsv"
+    local_file ="/home/airflow/final.tsv"
+)
+
 postgreCreate = PostgresOperator(
     task_id = 'postgeCreate',
     postgres_conn_id = "postgres_default",
@@ -233,4 +239,4 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 #clear_local_import_dir >>
 create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> postgreCreate >> postgreFill
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> download_from_hdfs >> postgreCreate >> postgreFill
