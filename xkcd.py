@@ -198,8 +198,9 @@ cleanse_hive_table = HiveOperator(
 
 download_from_hdfs = HdfsGetFileOperator(
     task_id = "download_from_hdfs",
-    remote_file = "/user/hadoop/raw/raw.tsv"
-    local_file ="/home/airflow/final.tsv"
+    remote_file = "/user/hadoop/raw/raw.tsv",
+    local_file ="/home/airflow/final.tsv",
+    dag=dag
 )
 
 postgreCreate = PostgresOperator(
