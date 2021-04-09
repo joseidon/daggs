@@ -251,16 +251,16 @@ setPerm = BashOperator(
 
 
 
-for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("number_of_comics"))):
-    if i!=404:
-        general_xkcd_download = HttpDownloadOperator(
-            task_id='download_xdcd_' + str(i),
-            download_uri='https://xkcd.com/{}/info.0.json'.format(str(i)),
-            save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
-            dag=dag,
-        )
-        general_xkcd_download.set_upstream(last_download_comic)
-        dummy_op.set_upstream(general_xkcd_download)
+#for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("number_of_comics"))):
+#    if i!=404:
+#        general_xkcd_download = HttpDownloadOperator(
+#            task_id='download_xdcd_' + str(i),
+#            download_uri='https://xkcd.com/{}/info.0.json'.format(str(i)),
+#            save_to='/home/airflow/xkcd/{}.json'.format(str(i)),
+#            dag=dag,
+#        )
+#        general_xkcd_download.set_upstream(last_download_comic)
+#        dummy_op.set_upstream(general_xkcd_download)
 
 
 
@@ -271,5 +271,6 @@ for i in range(int(Variable.get("number_of_latest_download")),int(Variable.get("
 #clear_local_import_dir >>
 create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_2 >> download_xkcd_latest >> last_comic >> last_download_comic
 #last_comic >> tasks
+last_comic >> dummy_op
 #dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> download_from_hdfs >> setPerm >> postgreCreate >> postgreFill
 dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >> setPerm >>postgreClear>> postgreCreate >> postgreFill

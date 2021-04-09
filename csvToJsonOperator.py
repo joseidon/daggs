@@ -23,7 +23,7 @@ class csvToJsonOperator(BaseOperator):
         data = []
         for f in onlyfiles:
             with open('{}{}'.format(mypath,f)) as json_file:
-                rj = pandas.read_json(json_file, typ = 'series', encoding='utf8')
+                rj = pandas.read_json(json_file, typ = 'series', encoding='utf16')
                 #dfs = pandas.DataFrame(columns = ["month", "num", 'link', 'year', 'news', 'safe_title', 'transscript', 'alt', 'img', 'title', 'day'])
                 dfs = pandas.DataFrame.from_dict(rj)
                 #print(dfs)
