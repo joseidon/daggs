@@ -226,21 +226,21 @@ csv_to_json = csvToJsonOperator.csvToJsonOperator(
 #)
 
 postgreCreate = PostgresOperator(
-    task_id = 'postgeCreate',
+    task_id = 'postgreCreate',
     postgres_conn_id = "postgres_default",
     sql = postgresCreate,
     dag=dag
 )
 
 postgreClear = PostgresOperator(
-    task_id = 'postgeCreate',
+    task_id = 'postgreCreate',
     postgres_conn_id = "postgres_default",
     sql = postgresClear,
     dag=dag
 )
 
 postgreFill = PythonOperator(
-    task_id = "postreFill",
+    task_id = "postgreFill",
     python_callable = postgresFilling,
     dag=dag
 )
