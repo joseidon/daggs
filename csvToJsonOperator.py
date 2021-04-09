@@ -31,8 +31,8 @@ class csvToJsonOperator(BaseOperator):
                 #print(dfs)
                 
                 dfs = dfs.transpose()
-                dfs.insert(11,"years",dfs["year"], True)
-                dfs = dfs.drop(labels = ["month","link","news","year","day","years"], axis=1,)
+                #dfs.insert(11,"years",dfs["year"], True)
+                dfs = dfs.drop(labels = ["month","link","news","year","day"], axis=1,)
                 #dfs = dfs.insert(9,"years",dfs["year"], True)
                 #df['years'] = df['year']
                 #df.drop(columns=["year"])
