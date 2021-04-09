@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS data (month INT, num INT, safe_title VARCHAR(1000), t
 
 postgresFill='''
 COPY data 
-FROM '/home/airflow/final.tsv'
+FROM '/home/airflow/raw/raw.tsv'
 DELIMITER E'\t'
 CSV HEADER;
 '''
@@ -79,7 +79,7 @@ def get_number():
         number_of_comics = data['num']
     print(number_of_comics)
     #Variable.set("number_of_comics", number_of_comics)
-    Variable.set("number_of_comics", 10)
+    Variable.set("number_of_comics", 20)
     return 10
     #return number_of_comics
 
