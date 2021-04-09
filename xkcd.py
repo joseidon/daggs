@@ -276,4 +276,4 @@ create_local_import_dir >>  create_local_import_dir_2 >> clear_local_import_dir_
 #last_comic >> tasks
 last_download_comic >> dummy_op
 #dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >>create_hdfs_raw_dir >> upload_raw >> cleanse_hive_table>> create_raw_table >> download_from_hdfs >> setPerm >> postgreCreate >> postgreFill
-dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >> setPerm >>postgreClear>> postgreCreate >> postgreFill
+dummy_op >> create_final_dir >> clear_final_dir >> csv_to_json >> setPerm >> postgreClear >> postgreCreate >> postgreFill
