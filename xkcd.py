@@ -221,7 +221,7 @@ postgreCreate = PostgresOperator(
 )
 
 postgreFill = PythonOperator(
-    task_id = "postreFill"
+    task_id = "postreFill",
     python_callable = postgresFilling,
     dag=dag
 )
