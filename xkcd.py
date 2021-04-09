@@ -115,7 +115,7 @@ def get_download_number():
 
 def postgresFilling():
     postgresHook = PostgresHook(postgres_conn_id="postgres_default")
-    csv_file = "/home/airflow/raw/final.tsv"
+    csv_file = "/home/airflow/raw/raw.tsv"
     postgresHook.copy_expert("COPY data FROM STDIN", csv_file)
 
 #STDIN DELIMITER '\t' CSV"
