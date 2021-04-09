@@ -41,8 +41,13 @@ CREATE EXTERNAL TABLE raw_data(
 	title STRING,
     day INT,
     years INT
-) PARTITIONED BY (year int) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
+) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' STORED AS TEXTFILE LOCATION '/user/hadoop/raw'
 TBLPROPERTIES ('skip.header.line.count'='1');
+'''
+
+hiveSQL_new = '''
+ALTER TABLE data
+ADD IF NOT EXISTS partition(partition_year={{ macros.ds_format(ds, "%Y-%m-%d", "%Y")}})
 '''
 
 hiveQL_create_partitioned='''
@@ -68,6 +73,7 @@ DELIMITER E'\t'
 CSV HEADER;
 '''
 
+
 dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
           schedule_interval='56 18 * * *',
           start_date=datetime(2019, 10, 16), catchup=False, max_active_runs=1)
@@ -77,10 +83,13 @@ dag = DAG('xkcd3', default_args=args, description='xkcd practical exam',
 
 def get_number():
     number_of_comics = 0
+    year = 2006
     with open('/home/airflow/xkcd2/latest_xkcd.json') as json_file:
         data = json.load(json_file)
         number_of_comics = data['num']
+        year = data['year']
     print(number_of_comics)
+    
     #Variable.set("number_of_comics", number_of_comics)
     Variable.set("number_of_comics", 20)
     return 10
@@ -186,7 +195,7 @@ create_hdfs_raw_dir = HdfsMkdirFileOperator(
 upload_raw = HdfsPutFileOperator(
     task_id='upload_raw',
     local_file="/home/airflow/raw/raw.tsv",
-    remote_file='/user/hadoop/raw/raw.tsv',
+    remote_file='/user/hadoop/raw/raw{{ ds }}.tsv',
     hdfs_conn_id='hdfs',
     dag=dag,
 )
