@@ -51,12 +51,13 @@ CREATE TABLE IF NOT EXISTS data (
 	safe_title STRING,
     transcript STRING,
 	alt STRING,
+    img STRING
 	title STRING,
     day INT
 ) PARTITIONED BY(year)STORED AS TEXTFILE LOCATION '/user/hadoop/raw';
 '''
 postgresCreate='''
-CREATE TABLE IF NOT EXISTS data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY (num));
+CREATE TABLE IF NOT EXISTS data (month INT, num INT, safe_title VARCHAR(1000), transcript VARCHAR(1000), alt VARCHAR(1000), img VARCHAR(1000), title VARCHAR(1000), day INT, year INT, PRIMARY KEY (num));
 '''
 
 postgresFill='''
