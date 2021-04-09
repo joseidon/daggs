@@ -39,6 +39,7 @@ class csvToJsonOperator(BaseOperator):
                 dfs = dfs.reset_index(drop=True)
                 dfs =dfs.replace(r'\t',' ', regex=True) 
                 dfs =dfs.replace(r'\n',' ', regex=True) 
+                dfs =dfs.encode("ascii", "replace")
                 #print(dfs)
                 data.append(dfs)
         print("Print List:")
